@@ -4,45 +4,24 @@ import Footer from '../components/landing-pages/Footer'
 import React, { useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import CarCard from '../components/landing-pages/CarCard'
-
-const BACKEND_URL = import.meta.env['VITE_BACKEND_URL']
-
-type FormMobil = {
-  driverType: 'withDriver' | 'withoutDriver'
-  date?: string | undefined,
-  pickupTime: string,
-  passengers: number
-}
-
-type EventTargetForm = {
-  elements: Record<string, { value: string | number }>
-  
-}
+import { EventTargetForm, Car } from '../types'
+import { httpFetch } from '../utils/http'
 
 function SearchCar() {
-  const [foundCars, setFoundCars] = useState<Array<any> | undefined>()
+  const [foundCars, setFoundCars] = useState<Array<Car> | undefined>()
 
   async function submitCariMobil(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const target = e.target as unknown as EventTargetForm
-    const formData: FormMobil =  {
-      driverType: target.elements.pickupTime.value as FormMobil['driverType'],
-      passengers: +target.elements.passengers.value,
-      date: String(target.elements.date.value),
-      pickupTime: String(target.elements.date.value)
-    }
-    const url = new URL(`${BACKEND_URL}api/v1/cars`)
-    url.searchParams.append('inputTanggal', formData.date ?? '')
-    url.searchParams.append('waktuJemput', formData.pickupTime ?? '')
-    url.searchParams.append('jumlahPenumpang', String(formData.passengers))
-    console.log(url.toString())
-
-    const res = await fetch(url.toString())
-    const json = await res.json()
-    if (res.ok) {
-      setFoundCars(json)
-    } else {
-      console.log(json)
+    try {
+    const json = await httpFetch<Array<Car>>('cars', {
+      inputTanggal: String(target.elements.date.value),
+      waktuJemput: String(target.elements.pickupTime.value),
+      jumlahPenumpang: +target.elements.passengers.value    
+    })
+    setFoundCars(json)
+    } catch (error) {
+      throw error as Error
     }
   }
 

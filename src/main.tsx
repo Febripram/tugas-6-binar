@@ -6,6 +6,7 @@ import Dashboard from './layout/Dashboard.tsx'
 import Cars from './pages/dashboard/Cars.tsx';
 import Home from './pages/dashboard/Home.tsx';
 import SearchCar from './pages/SearchCar.tsx';
+import LoginPage from './pages/Login.tsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter([
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/cari-mobil',
     element: <SearchCar />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
   },
   {
     path: '/dashboard',

@@ -6,7 +6,7 @@ const Home = () => {
     <div>
       <h2>Home Page</h2>
       <Button variant='warning'> 
-        <Link to="/dashboard" className='white'>Link</Link>
+        <Link to="/login" className='white'>Login</Link>
       </Button>
     </div>
   );
