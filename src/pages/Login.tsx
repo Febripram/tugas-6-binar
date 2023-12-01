@@ -1,11 +1,13 @@
 import { Container, Card, Button, Form } from 'react-bootstrap';
 import { EventTargetForm } from '../types'
 import { httpFetch } from '../utils/http';
-import * as LS from '../utils/localStorage'
 import { useNavigate } from 'react-router-dom'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 function LoginPage() {
   const navigate = useNavigate()
+  // eslint-disable-next-line
+  const [_token, setToken] = useLocalStorage('auth', {})
 
   async function submitLogin(e: React.FormEvent<HTMLFormElement>) {
     try {
@@ -18,7 +20,7 @@ function LoginPage() {
           password: target.elements.password.value
         })
       })
-      LS.set('token', json.token)
+      setToken(json)
       navigate('/dashboard')
     } catch (error) {
       throw error as Error
